@@ -1,17 +1,51 @@
+/*
+Relationship diagram
++-------+            +-----------+            +-------------+            +----------------+
+| Types | 1 ------ 1 | Inventory | (*) ---- 1 | Transaction | 1 ------ 1 | CCVerification |
++-------+            +-----------+            +-------------+            +----------------+
+ - Id ---------+      - Id                 +---- Id                   +---- Id
+ - Type        +------- TypeId             |   - CCVerificationId ----+   - Approved 
+ - Cost               - InsertDate         |   - InsertDate               - OriginalTransactionAmount
+                      - TransactionId -----+   - RefundRequested          - InsertDate
+                      - InsertDate                                        
+                      - SaleDate
+                      - RefundDate
+*/
+
 CREATE TABLE Types (
 	Id int NOT NULL IDENTITY(1,1),
-	Type varchar(16) NOT NULL
-	Cost decimal NOT NULL
+	Type varchar(16) NOT NULL,
+	Cost decimal NOT NULL,
 	PRIMARY KEY (Id)
+)
+
+CREATE TABLE CCVerification (
+    Id int NOT NULL IDENTITY(1,1),
+    Approved boolean NOT NULL,
+    OriginalTransactionAmount decimal NOT NULL,
+    InsertDate datetime DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (Id)
+)
+
+CREATE TABLE Transactions (
+    Id int NOT NULL IDENTITY(1,1),
+    CCVerificationId int NOT NULL,
+    InsertDate datetime NOT NULL CURRENT_TIMESTAMP,
+    RefundRequested boolean NOT NULL DEFAULT 0,
+    PRIMARY KEY (Id)
+    FOREIGN KEY (CCVerificationId) REFERENCES CCVerification(Id)
 )
 
 CREATE TABLE Inventory (
 	Id int NOT NULL IDENTITY(1,1),
 	TypeId int NOT NULL,
-	AddDate datetime DEFAULT CURRENT_TIMESTAMP,
-	Sold bool DEFAULT FALSE,
+    TransactionId int NULL,
+    InsertDate datetime DEFAULT CURRENT_TIMESTAMP,
+    SaleDate datetime NULL,
+    RefundDate datetime NULL,
 	PRIMARY KEY (Id)
 	FOREIGN KEY (TypeId) REFERENCES Types(Id)
+    FOREIGN KEY (TransactionId) REFERENCES Transactions(Id)
 );
 
 CREATE PROCEDURE SeedTypes
