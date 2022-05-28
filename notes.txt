@@ -1,0 +1,34 @@
+Transaction Ledger of Vending machine
+	- Payments made with credit card
+		- Payment needs to be taken before completed transaction recorded
+		- can log failed transactions
+	- Record transaction (POST /transaction)
+		- purchase composed of multiple items
+			- Soda ($0.95)
+			- Candy Bar ($0.60)
+			- Chips ($0.99)
+		- purchase requires valid payment
+	- Record refunds (POST /refund)
+		- Entire transaction or individual items?
+	- View entire ledger (GET)
+	- View single transaction (GET/{id})
+	- Track Inventory (cannot buy if out of stock)
+		- Technically physical products, can check vending "sensors" and assign GUID
+		- Add products to database as noticed by sensors.
+		- For initial stocking lets assume 20 of each item
+	- Ledger persists in storage
+		- will use good ol' SQL
+
+SPA
+	- Interface to purchase items from Vending Machine
+	- Integrates with Ledger to post transactions
+	- Selections
+		- Soda ($0.95)
+		- Candy Bar ($0.60)
+		- Chips ($0.99)
+	- Inventory
+		- Product details
+			- Id: string
+			- Type: string
+			- Cost: decimal
+			- AddDate: datetime
