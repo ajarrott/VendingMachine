@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using VendingMachineAPI.Models;
+using VendingMachineAPI.Models.Options;
 
-namespace VendingMachineAPI.Contexts
+namespace VendingMachineAPI.Models.DAL
 {
     public class VendingMachineContext : DbContext
     {

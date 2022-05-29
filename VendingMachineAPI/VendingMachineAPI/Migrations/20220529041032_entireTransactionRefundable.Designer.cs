@@ -12,8 +12,8 @@ using VendingMachineAPI.Models.DAL;
 namespace VendingMachineAPI.Migrations
 {
     [DbContext(typeof(VendingMachineContext))]
-    [Migration("20220528215920_Inital Create")]
-    partial class InitalCreate
+    [Migration("20220529041032_entireTransactionRefundable")]
+    partial class entireTransactionRefundable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace VendingMachineAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("VendingMachineAPI.Models.CreditCardVerification", b =>
+            modelBuilder.Entity("VendingMachineAPI.Models.DAL.CreditCardVerification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +46,7 @@ namespace VendingMachineAPI.Migrations
                     b.ToTable("CreditCardsVerification");
                 });
 
-            modelBuilder.Entity("VendingMachineAPI.Models.Product", b =>
+            modelBuilder.Entity("VendingMachineAPI.Models.DAL.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,9 +59,6 @@ namespace VendingMachineAPI.Migrations
 
                     b.Property<int?>("ProductTypeId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("RefundDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("SaleDate")
                         .HasColumnType("datetime2");
@@ -78,7 +75,7 @@ namespace VendingMachineAPI.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("VendingMachineAPI.Models.ProductType", b =>
+            modelBuilder.Entity("VendingMachineAPI.Models.DAL.ProductType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -95,9 +92,29 @@ namespace VendingMachineAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cost = 0.95m,
+                            Type = "Soda"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Cost = 0.60m,
+                            Type = "Candy Bar"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Cost = 0.99m,
+                            Type = "Chips"
+                        });
                 });
 
-            modelBuilder.Entity("VendingMachineAPI.Models.Transaction", b =>
+            modelBuilder.Entity("VendingMachineAPI.Models.DAL.Transaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,11 +125,11 @@ namespace VendingMachineAPI.Migrations
                     b.Property<int>("CCVerificationId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("InsertDate")
+                    b.Property<DateTime>("PurchaseDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("RefundRequested")
-                        .HasColumnType("bit");
+                    b.Property<DateTime>("RefundDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -121,22 +138,22 @@ namespace VendingMachineAPI.Migrations
                     b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("VendingMachineAPI.Models.Product", b =>
+            modelBuilder.Entity("VendingMachineAPI.Models.DAL.Product", b =>
                 {
-                    b.HasOne("VendingMachineAPI.Models.ProductType", "ProductType")
+                    b.HasOne("VendingMachineAPI.Models.DAL.ProductType", "ProductType")
                         .WithMany()
                         .HasForeignKey("ProductTypeId");
 
-                    b.HasOne("VendingMachineAPI.Models.Transaction", null)
+                    b.HasOne("VendingMachineAPI.Models.DAL.Transaction", null)
                         .WithMany("Products")
                         .HasForeignKey("TransactionId");
 
                     b.Navigation("ProductType");
                 });
 
-            modelBuilder.Entity("VendingMachineAPI.Models.Transaction", b =>
+            modelBuilder.Entity("VendingMachineAPI.Models.DAL.Transaction", b =>
                 {
-                    b.HasOne("VendingMachineAPI.Models.CreditCardVerification", "CCVerification")
+                    b.HasOne("VendingMachineAPI.Models.DAL.CreditCardVerification", "CCVerification")
                         .WithMany()
                         .HasForeignKey("CCVerificationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -145,7 +162,7 @@ namespace VendingMachineAPI.Migrations
                     b.Navigation("CCVerification");
                 });
 
-            modelBuilder.Entity("VendingMachineAPI.Models.Transaction", b =>
+            modelBuilder.Entity("VendingMachineAPI.Models.DAL.Transaction", b =>
                 {
                     b.Navigation("Products");
                 });

@@ -1,4 +1,4 @@
-﻿namespace VendingMachineAPI.Models
+﻿namespace VendingMachineAPI.Models.Options
 {
     public class DbConnection
     {
