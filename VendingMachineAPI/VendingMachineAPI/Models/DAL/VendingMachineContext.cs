@@ -37,6 +37,14 @@ namespace VendingMachineAPI.Models.DAL
                 .Where(x => x.SaleDate == null).ToList();
         }
 
+        public List<Transaction> GetAllTransactions()
+        {
+            return Transactions
+                .Include(x => x.Products)
+                .ThenInclude(x => x.ProductType)
+                .ToList();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseSqlServer(_dbConnection.ConnectionString);

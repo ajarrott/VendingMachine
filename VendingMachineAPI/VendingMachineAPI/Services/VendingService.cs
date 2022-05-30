@@ -232,7 +232,7 @@ namespace VendingMachineAPI.Services
 
         public List<LedgerDto> GetAllTransactions()
         {
-            var transactions = _context.Transactions.ToList();
+            var transactions = _context.GetAllTransactions();
             List<LedgerDto> resultDto = new List<LedgerDto>();
 
             foreach(var transaction in transactions)
