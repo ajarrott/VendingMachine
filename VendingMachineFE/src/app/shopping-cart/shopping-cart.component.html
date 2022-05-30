@@ -1,0 +1,46 @@
+
+<div [hidden]="cartItems().length > 0">
+    <div>Cart is empty</div>
+</div>
+<div [hidden]="cartItems().length == 0">
+    <a href="#" (click)="toggleCartItems()">
+        <span>Cart({{cartItems().length}}) - {{ totalOfItems() | currency }}</span>
+    </a>
+    <div [hidden]="!showCartDetails">
+        <ul>
+            <li *ngFor="let item of cartItems(); index as i">
+                {{item.name}} - <input type="number" [(ngModel)]="item.quantity" /> - {{item.price * item.quantity | currency}} <a href="#" (click)="removeItem(i)">remove</a>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <div>
+            <label>card number</label>
+            <input [(ngModel)]="cc.number" required (blur)="validateData()" />
+        </div>
+        <div *ngIf="cc.number === undefined || cc.number.length == 0">
+            <span>card number is required</span>
+        </div>
+        <div>
+            <label>Expiration: month</label>
+            <input type="number" [(ngModel)]="cc.expirationMonth" (blur)="updateCCDate()" required />
+            /
+            <label>year</label>
+            <input type="number" [(ngModel)]="cc.expirationYear" (blur)="updateCCDate()" required />
+        </div>
+        <div *ngIf="cc.expiration != null || cc.expirationMonth == null || cc.expirationYear == null">
+            <span>expiration date is required</span>
+        </div>
+        <button (click)="completePurchase()" [disabled]="validData == false">complete purchase</button>
+    </div>
+</div>
+
+<div *ngIf="transactionResp !== undefined">
+    <div [hidden]="!transactionResp.error">
+        Error: {{transactionResp.errorMessage}}
+    </div>
+    <div [hidden]="transactionResp.error">
+        <div>Vending requested items!</div>
+        <div>Card charged {{transactionResp.amountCharged}}</div>
+    </div>
+</div>

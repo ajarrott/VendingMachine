@@ -242,6 +242,7 @@ namespace VendingMachineAPI.Services
                     RefundDateTime = transaction.RefundDate,
                     SaleDateTime = transaction.PurchaseDate,
                     SalePrice = transaction.Products.Sum(x => x.ProductType.Cost),
+                    TransactionId = transaction.Id
                 };
 
                 var lineItems = ConvertProductToInventoryDto(transaction.Products);

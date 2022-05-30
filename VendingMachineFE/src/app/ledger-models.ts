@@ -4,5 +4,6 @@ export interface LedgerEntry {
     salePrice: number,
     saleDateTime: Date,
     refundDateTime: Date,
-    lineItems: ItemForSale[]
+    lineItems: ItemForSale[],
+    transactionId: number
 }

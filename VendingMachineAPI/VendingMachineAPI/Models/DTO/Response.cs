@@ -53,6 +53,7 @@
         public DateTime SaleDateTime { get; set; }
         public DateTime RefundDateTime { get; set; }
         public List<InventoryDto> LineItems { get; set; }
+        public int TransactionId { get; set; }
     }
 
     /// <summary>
