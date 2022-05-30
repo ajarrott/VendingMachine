@@ -201,7 +201,7 @@ namespace VendingMachineAPI.Services
             var productsSold = _context.Products.Where(p => soldIds.Contains(p.Id)).ToList();
             var newTran = new Transaction()
             {
-                CCVerification = new CreditCardVerification(ccResp),
+                CreditCardVerification = new CreditCardVerification(ccResp),
                 PurchaseDate = DateTime.Now,
                 Products = productsSold
             };
