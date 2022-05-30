@@ -38,6 +38,7 @@ namespace VendingMachineAPI.Models.DAL
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseSqlServer(_dbConnection.ConnectionString);
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -38,7 +38,7 @@
 
     public class ProductResponseDto : ErrorDto
     {
-        public List<int> SoldProductIds = new List<int>();
+        public List<int> ProductIds = new List<int>();
         public int Quantity { get; set; }
     }
 

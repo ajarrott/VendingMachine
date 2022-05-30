@@ -15,9 +15,9 @@ namespace VendingMachineAPI.Services
             _creditCardServicing = creditCardServicing;
         }
 
-        public ProductResponseDto AddProduct(InventoryDto product)
+        public ProductResponseDto AddProduct(StockDto product)
         {
-            _logger.LogInformation($"Adding {product.Quantity} {product.Name} for {product.Price} each.");
+            _logger.LogInformation($"Adding {product.Quantity} {product.Name} each.");
 
             var timeNow = DateTime.Now;
             var productType = _context.FindProductType(product.Name);
@@ -30,22 +30,27 @@ namespace VendingMachineAPI.Services
                 return ReturnProductError(errorString);
             }
 
-            for(int i = 0; i < product.Quantity; i++)
+            var respDto = new ProductResponseDto();
+
+            for (int i = 0; i < product.Quantity; i++)
             {
                 var newProduct = new Product()
                 {
                     InsertDate = timeNow,
-                    ProductType = productType,
-                    SaleDate = timeNow
+                    ProductType = productType
                 };
 
                 _context.Products.Add(newProduct);
+                _context.SaveChanges();
+
+                respDto.ProductIds.Add(newProduct.Id);
             }
 
-            _context.SaveChanges();
             _logger.LogInformation($"Added {product.Quantity} {product.Name}");
 
-            return new ProductResponseDto() { Quantity = product.Quantity };
+            respDto.Quantity = respDto.ProductIds.Count();
+
+            return respDto;
         }
 
         public List<Product> GetProductsByType(string type)
@@ -97,7 +102,7 @@ namespace VendingMachineAPI.Services
 
             return new ProductResponseDto()
             {
-                SoldProductIds = soldProductIds,
+                ProductIds = soldProductIds,
                 Quantity = soldProductIds.Count
             };
 
@@ -189,7 +194,7 @@ namespace VendingMachineAPI.Services
                 }
 
                 soldItems.Add(item);
-                soldIds.AddRange(resp.SoldProductIds);
+                soldIds.AddRange(resp.ProductIds);
             }
 
 

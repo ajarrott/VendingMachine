@@ -4,7 +4,7 @@ namespace VendingMachineAPI.Services
 {
     public interface IVendingService
     {
-        ProductResponseDto AddProduct(InventoryDto product);
+        ProductResponseDto AddProduct(StockDto product);
         AllStockDto ListProducts();
 
         TransactionResponseDto CreateTransaction(PurchaseDto transaction);
