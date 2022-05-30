@@ -32,12 +32,23 @@ namespace VendingMachineAPI.Models.DAL
 
         public List<Product> GetAllUnsoldProducts()
         {
-            return Products.Where(x => x.SaleDate == null).ToList();
+            return Products
+                .Include(x => x.ProductType)
+                .Where(x => x.SaleDate == null).ToList();
+        }
+
+        public List<Transaction> GetAllTransactions()
+        {
+            return Transactions
+                .Include(x => x.Products)
+                .ThenInclude(x => x.ProductType)
+                .ToList();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseSqlServer(_dbConnection.ConnectionString);
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,6 +57,11 @@ namespace VendingMachineAPI.Models.DAL
                 new ProductType() { Cost = 0.95m, Type = "Soda", Id = 1 },
                 new ProductType() { Cost = 0.60m, Type = "Candy Bar", Id = 2 },
                 new ProductType() { Cost = 0.99m, Type = "Chips", Id = 3 });
+
+            modelBuilder.Entity<Transaction>()
+                .HasMany(x => x.Products)
+                .WithOne(x => x.Transaction);
+
         }
     }
 }

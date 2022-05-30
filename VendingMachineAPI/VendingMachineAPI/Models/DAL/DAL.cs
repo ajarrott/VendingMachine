@@ -20,9 +20,12 @@ namespace VendingMachineAPI.Models.DAL
     {
         public Product() { }
         public int Id { get; set; }
+        public int ProductTypeId { get; set; }
         public ProductType ProductType { get; set; }
         public DateTime InsertDate { get; set; }
         public DateTime? SaleDate { get; set; }
+        public int? TransactionId { get; set; }
+        public Transaction? Transaction { get; set; }
     }
 
     /// <summary>
@@ -32,13 +35,14 @@ namespace VendingMachineAPI.Models.DAL
     {
         public Transaction()
         {
-            CCVerification = new CreditCardVerification();
+            CreditCardVerification = new CreditCardVerification();
             Products = new List<Product>();
         }
 
         public int Id { get; set; }
         public List<Product> Products { get; set; }
-        public CreditCardVerification CCVerification { get; set; }
+        public int? CreditCardVerificationId { get; set; }
+        public CreditCardVerification CreditCardVerification { get; set; }
         public DateTime PurchaseDate { get; set; }
         public DateTime RefundDate { get; set; }
     }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VendingMachineAPI.Models.DAL;
 
@@ -11,9 +12,10 @@ using VendingMachineAPI.Models.DAL;
 namespace VendingMachineAPI.Migrations
 {
     [DbContext(typeof(VendingMachineContext))]
-    partial class VendingMachineContextModelSnapshot : ModelSnapshot
+    [Migration("20220530044844_updateModel")]
+    partial class updateModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,7 +123,7 @@ namespace VendingMachineAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CreditCardVerificationId")
+                    b.Property<int>("CCVerificationId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PurchaseDate")
@@ -132,7 +134,7 @@ namespace VendingMachineAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreditCardVerificationId");
+                    b.HasIndex("CCVerificationId");
 
                     b.ToTable("Transactions");
                 });
@@ -145,22 +147,22 @@ namespace VendingMachineAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VendingMachineAPI.Models.DAL.Transaction", "Transaction")
+                    b.HasOne("VendingMachineAPI.Models.DAL.Transaction", null)
                         .WithMany("Products")
                         .HasForeignKey("TransactionId");
 
                     b.Navigation("ProductType");
-
-                    b.Navigation("Transaction");
                 });
 
             modelBuilder.Entity("VendingMachineAPI.Models.DAL.Transaction", b =>
                 {
-                    b.HasOne("VendingMachineAPI.Models.DAL.CreditCardVerification", "CreditCardVerification")
+                    b.HasOne("VendingMachineAPI.Models.DAL.CreditCardVerification", "CCVerification")
                         .WithMany()
-                        .HasForeignKey("CreditCardVerificationId");
+                        .HasForeignKey("CCVerificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("CreditCardVerification");
+                    b.Navigation("CCVerification");
                 });
 
             modelBuilder.Entity("VendingMachineAPI.Models.DAL.Transaction", b =>

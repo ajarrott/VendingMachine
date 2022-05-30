@@ -38,7 +38,7 @@ namespace VendingMachineAPI.Controllers
         [HttpPost("purchase")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<TransactionResponseDto> MakePurchase(PurchaseDto purchase)
+        public ActionResult<TransactionResponseDto> MakePurchase([FromBody] PurchaseDto purchase)
         {
             _logger.LogInformation($"Purchase Requested");
             var tranResp = _vendingService.CreateTransaction(purchase);
@@ -55,7 +55,7 @@ namespace VendingMachineAPI.Controllers
         [HttpPost("refund")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<RefundResponseDto> RefundPurchase(RefundDto refund)
+        public ActionResult<RefundResponseDto> RefundPurchase([FromBody] RefundDto refund)
         {
 
             var resp = _vendingService.RefundTransaction(refund);
@@ -67,6 +67,13 @@ namespace VendingMachineAPI.Controllers
             }
 
             return Ok(resp);
+        }
+
+        [HttpPost("restock")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<ProductResponseDto> RestockMachine([FromBody] StockDto itemToAdd)
+        {
+            return Ok(_vendingService.AddProduct(itemToAdd));
         }
     }
 }
