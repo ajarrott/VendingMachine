@@ -1,0 +1,8 @@
+<h2>Vending Machine</h2>
+<ul>
+    <li *ngFor="let stock of vendingMachine.inventory">
+        <div>name: <span>{{stock.name}}</span></div>
+        <div>cost: <span>{{stock.price | currency}}</span></div>
+        <div>quantity: <span>{{stock.quantity}}</span></div>
+    </li>
+</ul>

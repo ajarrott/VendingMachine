@@ -14,6 +14,7 @@ builder.Services.AddDbContext<VendingMachineContext>();
 builder.Services.Configure<DbConnection>(builder.Configuration.GetSection(DbConnection.ConfigSection));
 builder.Services.AddScoped<ICreditCardServicing, CreditCardServicing>();
 builder.Services.AddScoped<IVendingService, VendingService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,6 +25,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.UseAuthorization();
 
