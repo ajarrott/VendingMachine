@@ -5,13 +5,13 @@ Relationship diagram
 +-------+            +-----------+            +-------------+            +----------------+
  - Id ---------+      - Id                 +---- Id                   +---- Id
  - Type        +------- TypeId             |   - CCVerificationId ----+   - Approved 
- - Cost               - InsertDate         |   - InsertDate               - OriginalTransactionAmount
-                      - TransactionId -----+   - RefundRequested          - InsertDate
-                      - InsertDate                                        
+ - Cost               - InsertDate         |   - PurchaseDate             - OriginalTransactionAmount
+                      - TransactionId -----+   - RefundDate               - InsertDate
+                      - InsertDate                             
                       - SaleDate
-                      - RefundDate
 */
 
+-- These are just initial ideas when thinking out the problem, used EF to actually do the SQL portion
 CREATE TABLE Types (
 	Id int NOT NULL IDENTITY(1,1),
 	Type varchar(16) NOT NULL,

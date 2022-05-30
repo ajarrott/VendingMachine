@@ -1,4 +1,6 @@
-﻿namespace VendingMachineAPI.Models.DAL
+﻿using VendingMachineAPI.Models.DTO;
+
+namespace VendingMachineAPI.Models.DAL
 {
     /// <summary>
     /// Product type information
@@ -7,7 +9,7 @@
     {
         public ProductType() { }
         public int Id { get; set; }
-        public string? Type { get; set; }
+        public string Type { get; set; }
         public decimal Cost { get; set; }
     }
 
@@ -18,9 +20,9 @@
     {
         public Product() { }
         public int Id { get; set; }
-        public ProductType? ProductType { get; set; }
+        public ProductType ProductType { get; set; }
         public DateTime InsertDate { get; set; }
-        public DateTime SaleDate { get; set; }
+        public DateTime? SaleDate { get; set; }
     }
 
     /// <summary>
@@ -47,6 +49,13 @@
     public class CreditCardVerification
     {
         public CreditCardVerification() { }
+        public CreditCardVerification(CreditCardTransactionResponseDto ccResp) 
+        {
+            Approved = ccResp.Approved;
+            OriginalTransactionAmount = ccResp.TransactionAmount;
+            InsertDate = ccResp.TransactionDate;
+        }
+
         public int Id { get; set; }
         public bool Approved { get; set; }
         public decimal OriginalTransactionAmount { get; set; }

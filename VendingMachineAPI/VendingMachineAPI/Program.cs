@@ -1,5 +1,6 @@
-using VendingMachineAPI.Contexts;
-using VendingMachineAPI.Models;
+using VendingMachineAPI.Models.Options;
+using VendingMachineAPI.Models.DAL;
+using VendingMachineAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<VendingMachineContext>();
 builder.Services.Configure<DbConnection>(builder.Configuration.GetSection(DbConnection.ConfigSection));
+builder.Services.AddScoped<ICreditCardServicing, CreditCardServicing>();
+builder.Services.AddScoped<IVendingService, VendingService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
