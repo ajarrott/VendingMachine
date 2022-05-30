@@ -4,5 +4,6 @@
         <div>name: <span>{{stock.name}}</span></div>
         <div>cost: <span>{{stock.price | currency}}</span></div>
         <div>quantity: <span>{{stock.quantity}}</span></div>
+        <button (click)="addItem(stock.name, stock.price, 1)">add to cart</button>
     </li>
 </ul>

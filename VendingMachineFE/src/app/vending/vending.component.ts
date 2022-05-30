@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { VendingMachine } from '../vending-models';
+import { CartService } from '../cart.service';
+import { ItemForSale, VendingMachine } from '../vending-models';
 import { VendingService } from '../vending.service';
 
 @Component({
@@ -16,16 +17,20 @@ export class VendingComponent implements OnInit {
     ]
   };
 
-  constructor(private vendingService: VendingService) { }
+  constructor(private vendingService: VendingService, private cartService: CartService) { }
 
   ngOnInit(): void {
     this.getItems();
   }
 
-  getItems(){
+  getItems(): void {
     this.vendingService.getVendingMachine()
       .subscribe((data: VendingMachine) => this.vendingMachine = data)
   }
 
-
+  addItem(name: string, price:number, quantity: number): void{
+    console.log("adding: " + name);
+    var item: ItemForSale = { name: name, quantity: quantity, price: price };
+    this.cartService.addItem(item);
+  }
 }

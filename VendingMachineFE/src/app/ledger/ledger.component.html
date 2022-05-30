@@ -4,11 +4,14 @@
     <li *ngFor="let ledgerEntry of ledger">
         <div>Sale Price: <span>{{ledgerEntry.salePrice | currency}}</span> </div>
         <div>Sale DateTime: <span>{{ledgerEntry.saleDateTime | date:'short'}}</span></div>
-        <div>Refund DateTime: <span>{{ledgerEntry.refundDateTime | date:'short'}}</span></div>
+        <div>
+            <span *ngIf="checkIfMinVal(ledgerEntry.refundDateTime) == false">Refund DateTime: {{ledgerEntry.refundDateTime | date:'short'}}</span></div>
+            <span *ngIf="checkIfMinVal(ledgerEntry.refundDateTime) == true">Refund DateTime: Not Refunded</span>
         <div>Details: 
             <ul>
                 <li *ngFor="let lineItem of ledgerEntry.lineItems">{{lineItem.name}} - {{lineItem.price | currency}} x {{lineItem.quantity}}</li>
             </ul>
         </div>
+        <button (click)="refund(ledgerEntry.transactionId)" [disabled]="checkIfRefunded(ledgerEntry.refundDateTime) == false">Refund Transaction</button>
     </li>
 </ul>
